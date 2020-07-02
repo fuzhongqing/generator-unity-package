@@ -34,6 +34,8 @@ module.exports = class extends Generator {
     this.log(yosay(__mf('welcome', chalk.red('unity-package'))));
     return this.prompt(prompts).then(props => {
       this.props = props;
+      this.config.set("key", "123");
+      this.config.save();
     });
   }
 
@@ -41,7 +43,7 @@ module.exports = class extends Generator {
     var THAT = this;
 
     if (path.basename(this.destinationPath()) !== this.props.projectName) {
-      this.log(__mf(this.props.projectName));
+      this.log(i18n.__mf('nopath', chalk.green(this.props.projectName)));
       mkdirp(this.props.projectName);
       this.destinationRoot(this.destinationPath(this.props.projectName));
     }
@@ -51,7 +53,7 @@ module.exports = class extends Generator {
 
     pkg.name = this.props.packageName;
     pkg.version = this.props.version;
-    pkg.displayName = this.props.displayName;
+    pkg.displayName = this.props.projectName;
     pkg.description = this.props.description;
     pkg.unity = this.props.unityVersion;
     pkg.author.name = this.props.author;
@@ -130,31 +132,10 @@ module.exports = class extends Generator {
     this.fs.copy(
       this.templatePath("Tests.meta"),
       path.join(this.destinationPath(), "Tests.meta"),
-    )
-    /*
-    // 创建dist目录
-    mkdirp('dist');
-
-    // 写index.html
-    const indexHtmlTpl = _.template(this.fs.read(this.templatePath('index_tmpl.html')));
-    this.fs.write(this.destinationPath('dist/index.html'), indexHtmlTpl({
-      projectName: this.props.projectName
-    }));
-
-    // 创建src目录
-    mkdirp('src');
-
-    // 写webpack.config.js
-    this.fs.copy(
-      this.templatePath('webpack_tmpl.config.js'),
-      this.destinationPath('webpack.config.js')
     );
+  }
 
-    // 写index.js
-    this.fs.copy(
-      this.templatePath('index_tmpl.js'),
-      this.destinationPath('src/index.js')
-    );
-    */
+  end() {
+    this.log(yosay("Finished! Goodbye~"));
   }
 };
