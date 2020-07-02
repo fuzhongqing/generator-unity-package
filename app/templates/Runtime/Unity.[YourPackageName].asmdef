@@ -1,5 +1,5 @@
 {
-    "name": "YourPackageName",
+    "name": "<%=packageName%>",
     "references": [],
     "optionalUnityReferences": [],
     "includePlatforms": [],

@@ -1,5 +1,5 @@
 {
-    "name": "YourPackageName.Editor",
+    "name": "<%=packageName%>.Editor",
     "references": [],
     "optionalUnityReferences": [],
     "includePlatforms": [

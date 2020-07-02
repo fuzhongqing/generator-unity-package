@@ -21,8 +21,8 @@
     "chalk": "^4.1.0",
     "deep-extend": "^0.6.0",
     "get-user-locale": "^1.4.0",
+    "gulp-rename": "1.2.2",
     "i18n": "^0.10.0",
-    "lodash": "^4.17.15",
     "mkdirp": "^1.0.4",
     "yeoman-generator": "^1.1.1",
     "yosay": "^2.0.2"

@@ -1,4 +1,7 @@
 {
-    "hello": "hello world",
-    "welcome": "👏welcome to the %s generator!"
+	"hello": "hello world",
+	"welcome": "👏welcome to the %s generator!",
+	"no-path": "Your generator must be inside a folder named %s\n I'll automatically create this folder.",
+	"Unity Package": "Unity Package",
+	"UnityPackage": "UnityPackage"
 }

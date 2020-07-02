@@ -1,5 +1,5 @@
 {
-    "name": "YourPackageName.Editor.Tests",
+    "name": "<%=packageName%>.Editor.Tests",
     "references": [],
     "optionalUnityReferences": [
         "TestAssemblies"

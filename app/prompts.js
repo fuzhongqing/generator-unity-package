@@ -1,37 +1,39 @@
+const dep = require('./dependency');
+
 module.exports = [
     {
       type: 'input',
       name: 'projectName',
-      message: 'Please input project name (webpack-example):',
-      default: 'webpack-example'
+      default: 'UnityPackage'
     },
     {
       type: 'input',
-      name: 'projectTitle',
-      message: 'Please input project title (webpack示例):',
-      default: 'webpack示例'
+      name: 'packageName',
+      default: 'your.package.name'
     },
     {
       type: 'input',
-      name: 'projectDesc',
-      message: 'Please input project description:'
+      name: 'version',
+      default: '1.0.0'
     },
     {
       type: 'input',
-      name: 'projectMain',
-      message: 'Main file (src/index.js):',
-      default: 'src/index.js'
-    },
-    {
-      type: 'input',
-      name: 'projectAuthor',
-      message: 'Author (yanyinhong):',
-      default: 'yanyinhong'
+      name: 'description',
+      default: 'An Unity Package!'
     },
     {
       type: 'list',
-      name: 'projectLicense',
-      message: 'Please choose license:',
-      choices: ['MIT', 'ISC', 'Apache-2.0', 'AGPL-3.0']
+      name: 'unityVersion',
+      choices: ['2017.1', '2018.4', '2019.1']
+    },
+    {
+      type: 'input',
+      name: 'author',
+      default: 'anonymous'
+    },
+    {
+      type: 'checkbox',
+      name: 'dependencies',
+      choices: Object.keys(dep)
     }
   ]

@@ -3,14 +3,17 @@ const Generator = require('yeoman-generator');
 const chalk = require('chalk');
 const yosay = require('yosay');
 const path = require('path');
-const _ = require('lodash');
 const extend = require('deep-extend');
 const mkdirp = require('mkdirp');
 const i18n = require("i18n");
 const user_local = require('get-user-locale');
+const yo = require('../package.json');
+const rename = require("gulp-rename");
+const dep = require('./dependency');
 
 
 const prompts = require('./prompts');
+const { __mf } = require('i18n');
 
 module.exports = class extends Generator {
 
@@ -35,41 +38,100 @@ module.exports = class extends Generator {
   }
 
   writing() {
-    /*
+    var THAT = this;
+
     if (path.basename(this.destinationPath()) !== this.props.projectName) {
-      this.log(
-        'Your generator must be inside a folder named ' + this.props.projectName + '\n' +
-        'I\'ll automatically create this folder.'
-      );
+      this.log(__mf(this.props.projectName));
       mkdirp(this.props.projectName);
       this.destinationRoot(this.destinationPath(this.props.projectName));
     }
 
-    // 写README.md
-    const readmeTpl = _.template(this.fs.read(this.templatePath('README_tmpl.md')));
-    this.fs.write(this.destinationPath('README.md'), readmeTpl({
-      projectTitle: this.props.projectTitle,
-      projectDesc: this.props.projectDesc
-    }));
+    // process package.json
+    const pkg = this.fs.readJSON(this.templatePath('package.tmpl.json'), {});
 
-    // 写package.json
-    const pkg = this.fs.readJSON(this.templatePath('package_tmpl.json'), {});
-    extend(pkg, {
-      devDependencies: {
-        "webpack": "^3.0.0"
-      }
+    pkg.name = this.props.packageName;
+    pkg.version = this.props.version;
+    pkg.displayName = this.props.displayName;
+    pkg.description = this.props.description;
+    pkg.unity = this.props.unityVersion;
+    pkg.author.name = this.props.author;
+    pkg.dependencies = pkg.dependencies || {};
+
+    this.props.dependencies.forEach(function(i) {
+      pkg.dependencies[dep[i].name] = dep[i].version;
     });
-    pkg.keywords = pkg.keywords || [];
-    pkg.keywords.push('generator-webpack-example');
-
-    pkg.name = this.props.projectName;
-    pkg.description = this.props.projectDesc;
-    pkg.main = this.props.projectMain;
-    pkg.author = this.props.projectAuthor;
-    pkg.license = this.props.projectLicense;
 
     this.fs.writeJSON(this.destinationPath('package.json'), pkg);
 
+    this.registerTransformStream(rename(function(p) {
+      p.basename = p.basename.replace(/\[YourPackageName\]/g, THAT.props.packageName);
+      p.dirname = p.dirname.replace(/\[YourPackageName\]/g, THAT.props.packageName);
+    }));
+
+    // process readme
+    this.fs.copyTpl(
+      this.templatePath('README.tmpl.md'),
+      this.destinationPath('README.md'),
+      {
+        projectName: this.props.projectName,
+        packageName: this.props.packageName,
+        projectDescription: this.props.description,
+        yoHomePage: yo.homepage,
+        yoIssues: yo.bugs.url
+      }
+    );
+
+    this.fs.copy(
+      this.templatePath("README.tmpl.md.meta"),
+      path.join(this.destinationPath(), "README.md.meta"),
+    )
+    
+    this.fs.copy(
+      this.templatePath("package.tmpl.json.meta"),
+      path.join(this.destinationPath(), "package.json.meta"),
+    )
+    
+    var opts = {
+      projectName: this.props.projectName,
+      packageName: this.props.packageName,
+      projectDescription: this.props.description,
+      yoHomePage: yo.homepage,
+      yoIssues: yo.bugs.url
+    };
+
+    this.fs.copyTpl(
+      this.templatePath('Editor/**'), 
+      path.join(this.destinationPath(), "Editor"),
+      opts
+    );
+
+    this.fs.copy(
+      this.templatePath("Editor.meta"),
+      path.join(this.destinationPath(), "Editor.meta"),
+    )
+
+    this.fs.copyTpl(
+      this.templatePath('Runtime/**'), 
+      path.join(this.destinationPath(), "Runtime"),
+      opts
+    );
+
+    this.fs.copy(
+      this.templatePath("Runtime.meta"),
+      path.join(this.destinationPath(), "Runtime.meta"),
+    )
+
+    this.fs.copyTpl(
+      this.templatePath('Tests/**'), 
+      path.join(this.destinationPath(), "Tests"),
+      opts
+    );
+
+    this.fs.copy(
+      this.templatePath("Tests.meta"),
+      path.join(this.destinationPath(), "Tests.meta"),
+    )
+    /*
     // 创建dist目录
     mkdirp('dist');
 

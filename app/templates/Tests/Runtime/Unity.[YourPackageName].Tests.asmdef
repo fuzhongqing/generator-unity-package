@@ -1,5 +1,5 @@
 {
-    "name": "YourPackageName.Tests",
+    "name": "<%=packageName%>.Tests",
     "references": [],
     "optionalUnityReferences": [
         "TestAssemblies"
