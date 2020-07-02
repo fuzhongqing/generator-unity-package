@@ -34,8 +34,6 @@ module.exports = class extends Generator {
     this.log(yosay(__mf('welcome', chalk.red('unity-package'))));
     return this.prompt(prompts).then(props => {
       this.props = props;
-      this.config.set("key", "123");
-      this.config.save();
     });
   }
 
@@ -48,39 +46,36 @@ module.exports = class extends Generator {
       this.destinationRoot(this.destinationPath(this.props.projectName));
     }
 
-    // process package.json
-    const pkg = this.fs.readJSON(this.templatePath('package.tmpl.json'), {});
-
-    pkg.name = this.props.packageName;
-    pkg.version = this.props.version;
-    pkg.displayName = this.props.projectName;
-    pkg.description = this.props.description;
-    pkg.unity = this.props.unityVersion;
-    pkg.author.name = this.props.author;
-    pkg.dependencies = pkg.dependencies || {};
-
-    this.props.dependencies.forEach(function(i) {
-      pkg.dependencies[dep[i].name] = dep[i].version;
-    });
-
-    this.fs.writeJSON(this.destinationPath('package.json'), pkg);
-
     this.registerTransformStream(rename(function(p) {
       p.basename = p.basename.replace(/\[YourPackageName\]/g, THAT.props.packageName);
       p.dirname = p.dirname.replace(/\[YourPackageName\]/g, THAT.props.packageName);
     }));
 
+    var opts = {
+      unityVersion: this.props.unityVersion,
+      projectName: this.props.projectName,
+      packageName: this.props.packageName,
+      projectDescription: this.props.description,
+      yoHomePage: yo.homepage,
+      yoIssues: yo.bugs.url,
+      path: this.destinationPath()
+    };
+
+    this.fs.copyTpl(
+      this.templatePath('*/**'), 
+      this.destinationPath(),
+      opts
+    );
+
+    this.fs.writeJSON(path.join(this.destinationPath(), 'package.json'), pkg);    
+
+    /*
+
     // process readme
     this.fs.copyTpl(
       this.templatePath('README.tmpl.md'),
-      this.destinationPath('README.md'),
-      {
-        projectName: this.props.projectName,
-        packageName: this.props.packageName,
-        projectDescription: this.props.description,
-        yoHomePage: yo.homepage,
-        yoIssues: yo.bugs.url
-      }
+      path.join(this.destinationPath(), 'README.md'),
+      opts
     );
 
     this.fs.copy(
@@ -93,19 +88,21 @@ module.exports = class extends Generator {
       path.join(this.destinationPath(), "package.json.meta"),
     )
     
-    var opts = {
-      projectName: this.props.projectName,
-      packageName: this.props.packageName,
-      projectDescription: this.props.description,
-      yoHomePage: yo.homepage,
-      yoIssues: yo.bugs.url
-    };
+
+
+
 
     this.fs.copyTpl(
-      this.templatePath('Editor/**'), 
-      path.join(this.destinationPath(), "Editor"),
+      this.templatePath('Workspace~'),
+      path.join(this.destinationPath(), "Workspace~"),
       opts
-    );
+    )
+
+    this.fs.copy(
+      this.templatePath('.npmignore'),
+      path.join(this.destinationPath(), ".npmignore"),
+      opts
+    )
 
     this.fs.copy(
       this.templatePath("Editor.meta"),
@@ -133,6 +130,7 @@ module.exports = class extends Generator {
       this.templatePath("Tests.meta"),
       path.join(this.destinationPath(), "Tests.meta"),
     );
+    */
   }
 
   end() {

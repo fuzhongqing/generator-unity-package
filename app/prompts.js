@@ -24,7 +24,7 @@ module.exports = [
     {
       type: 'list',
       name: 'unityVersion',
-      choices: ['2017.1', '2018.4', '2019.1']
+      choices: ['2017.1', '2018.4.17f1', '2019.1']
     },
     {
       type: 'input',
