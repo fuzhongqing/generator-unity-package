@@ -28,6 +28,4 @@
     "yeoman-generator": "^1.1.1",
     "yosay": "^2.0.2"
   }
-  //,
-  //"publishConfig": { "registry": "https://npm.pkg.github.com/@fuzhongqing" }
 }
