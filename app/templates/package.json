@@ -1,0 +1,17 @@
+{
+    "dependencies": {
+    }, 
+    "author": {
+      "name": "Beatles", 
+      "url": "https://internal-sdk.lexinshengwen.com/"
+    }, 
+    "description": "Run-Time Text Generation (T4) Unity Ver.", 
+    "keywords": [
+      "SDK"
+    ],
+    "displayName": "Your Package Name", 
+    "name": "your.package.name", 
+    "unity": "2017.1", 
+    "version": "1.0.0"
+}
+  

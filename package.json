@@ -1,0 +1,31 @@
+{
+  "name": "generator-unity-package",
+  "version": "1.0.0",
+  "description": "yeoman generator for unity package",
+  "files": [
+    "app"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fuzhongqing/generator-up.git"
+  },
+  "keywords": [
+    "yeoman-generator"
+  ],
+  "author": "roy.fu",
+  "bugs": {
+    "url": "https://github.com/fuzhongqing/generator-up/issues"
+  },
+  "homepage": "https://github.com/fuzhongqing/generator-up#readme",
+  "dependencies": {
+    "chalk": "^4.1.0",
+    "deep-extend": "^0.6.0",
+    "get-user-locale": "^1.4.0",
+    "i18n": "^0.10.0",
+    "lodash": "^4.17.15",
+    "mkdirp": "^1.0.4",
+    "yeoman-generator": "^1.1.1",
+    "yosay": "^2.0.2"
+  },
+  "license": "ISC"
+}
