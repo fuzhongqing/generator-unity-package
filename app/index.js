@@ -92,69 +92,6 @@ module.exports = class extends Generator {
       path.join(this.destinationPath(), "Workspace~"),
       opts
     );
-
-    /*
-
-    // process readme
-    this.fs.copyTpl(
-      this.templatePath('README.tmpl.md'),
-      path.join(this.destinationPath(), 'README.md'),
-      opts
-    );
-
-    this.fs.copy(
-      this.templatePath("README.tmpl.md.meta"),
-      path.join(this.destinationPath(), "README.md.meta"),
-    )
-    
-    this.fs.copy(
-      this.templatePath("package.tmpl.json.meta"),
-      path.join(this.destinationPath(), "package.json.meta"),
-    )
-    
-
-
-
-
-    this.fs.copyTpl(
-      this.templatePath('Workspace~'),
-      path.join(this.destinationPath(), "Workspace~"),
-      opts
-    )
-
-    this.fs.copy(
-      this.templatePath('.npmignore'),
-      path.join(this.destinationPath(), ".npmignore"),
-      opts
-    )
-
-    this.fs.copy(
-      this.templatePath("Editor.meta"),
-      path.join(this.destinationPath(), "Editor.meta"),
-    )
-
-    this.fs.copyTpl(
-      this.templatePath('Runtime/**'), 
-      path.join(this.destinationPath(), "Runtime"),
-      opts
-    );
-
-    this.fs.copy(
-      this.templatePath("Runtime.meta"),
-      path.join(this.destinationPath(), "Runtime.meta"),
-    )
-
-    this.fs.copyTpl(
-      this.templatePath('Tests/**'), 
-      path.join(this.destinationPath(), "Tests"),
-      opts
-    );
-
-    this.fs.copy(
-      this.templatePath("Tests.meta"),
-      path.join(this.destinationPath(), "Tests.meta"),
-    );
-    */
   }
 
   end() {
