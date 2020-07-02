@@ -46,6 +46,8 @@ module.exports = class extends Generator {
       this.destinationRoot(this.destinationPath(this.props.projectName));
     }
 
+
+
     this.registerTransformStream(rename(function(p) {
       p.basename = p.basename.replace(/\[YourPackageName\]/g, THAT.props.packageName);
       p.dirname = p.dirname.replace(/\[YourPackageName\]/g, THAT.props.packageName);
@@ -62,12 +64,34 @@ module.exports = class extends Generator {
     };
 
     this.fs.copyTpl(
-      this.templatePath('*/**'), 
+      this.templatePath('export/**'), 
       this.destinationPath(),
       opts
     );
 
-    this.fs.writeJSON(path.join(this.destinationPath(), 'package.json'), pkg);    
+    
+    // process package.json
+    const pkg = this.fs.readJSON(this.templatePath('package.tmpl.json'), {});
+
+    pkg.name = this.props.packageName;
+    pkg.version = this.props.version;
+    pkg.displayName = this.props.projectName;
+    pkg.description = this.props.description;
+    pkg.unity = this.props.unityVersion;
+    pkg.author.name = this.props.author;
+    pkg.dependencies = pkg.dependencies || {};
+
+    this.props.dependencies.forEach(function(i) {
+      pkg.dependencies[dep[i].name] = dep[i].version;
+    });
+
+    this.fs.writeJSON(path.join(this.destinationPath(), 'package.json'), pkg);
+
+    this.fs.copyTpl(
+      this.templatePath('Workspace/**'), 
+      path.join(this.destinationPath(), "Workspace~"),
+      opts
+    );
 
     /*
 

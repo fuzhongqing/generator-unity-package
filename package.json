@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "yeoman generator for unity package",
   "files": [
-    "app"
+    "app",
+    "workspace"
   ],
   "repository": {
     "type": "git",
