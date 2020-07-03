@@ -8,6 +8,8 @@ const mkdirp = require('mkdirp');
 const i18n = require("i18n");
 const user_local = require('get-user-locale');
 const rename = require("gulp-rename");
+const readJson = require('read-package-json')
+
 
 const { __mf } = require('i18n');
 
@@ -15,12 +17,21 @@ module.exports = class extends Generator {
 
   initializing() {
 
-    if (this.config.get('info') == undefined) {
-        this.log(yosay("it's not a unity-packge project"));
-        process.exit(1);
-    }
+    this.props = {};
 
-    this.props = this.config.get('info');
+    var done = this.async();
+    readJson(this.destinationPath('package.json'), this.log, 
+    false, 
+    (er, data) => {
+        if (er) {
+            this.log(yosay("it`s not a unity-package project"));
+            process.exit(1);
+        }
+
+        this.props.packageName = data.name;
+        this.props.projectName = data.displayName;
+        done();
+    });
 
     i18n.configure({
       locales: ['zh', 'en'],
@@ -39,15 +50,6 @@ module.exports = class extends Generator {
   writing() {
 
     var THAT = this;
-
-    this.log(this.destinationPath());
-    
-
-    if (path.basename(this.destinationPath()) !== this.props.projectName) {
-        this.log(i18n.__mf('nopath', chalk.green(this.props.projectName)));
-        mkdirp(this.props.projectName);
-        this.destinationRoot(path.join(this.destinationPath(), this.props.projectName));
-      }
 
     this.registerTransformStream(rename(function(p) {
         var basename = p.basename.replace(/\[YourPackageName\]/g, THAT.props.packageName);

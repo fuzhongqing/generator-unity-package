@@ -22,7 +22,7 @@ module.exports = class extends Generator {
 
     i18n.configure({
       locales: ['zh', 'en'],
-      directory: __dirname + '/locales',
+      directory: __dirname + '/../locales',
       defaultLocale: 'en',
       register: global
     });
