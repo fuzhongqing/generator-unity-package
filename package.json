@@ -4,7 +4,7 @@
   "description": "yeoman generator for unity package",
   "files": [
     "app",
-    "workspace"
+    "sandbox"
   ],
   "repository": {
     "type": "git",

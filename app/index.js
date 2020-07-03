@@ -43,10 +43,8 @@ module.exports = class extends Generator {
     if (path.basename(this.destinationPath()) !== this.props.projectName) {
       this.log(i18n.__mf('nopath', chalk.green(this.props.projectName)));
       mkdirp(this.props.projectName);
-      this.destinationRoot(this.destinationPath(this.props.projectName));
+      this.destinationRoot(path.join(this.destinationPath(), this.props.projectName));
     }
-
-
 
     this.registerTransformStream(rename(function(p) {
       var basename = p.basename.replace(/\[YourPackageName\]/g, THAT.props.packageName);
@@ -68,10 +66,12 @@ module.exports = class extends Generator {
     };
 
     this.fs.copyTpl(
-      this.templatePath('export/**'), 
+      this.templatePath('**'), 
       this.destinationPath(),
       opts
     );
+
+    this.config.set('info', opts);
 
     
     // process package.json
@@ -90,12 +90,15 @@ module.exports = class extends Generator {
     });
 
     this.fs.writeJSON(path.join(this.destinationPath(), 'package.json'), pkg);
-
+    /*
     this.fs.copyTpl(
       this.templatePath('Workspace/**'), 
       path.join(this.destinationPath(), "Workspace"),
       opts
     );
+    */
+
+    this.config.save();
   }
 
   end() {
