@@ -49,8 +49,12 @@ module.exports = class extends Generator {
 
 
     this.registerTransformStream(rename(function(p) {
-      p.basename = p.basename.replace(/\[YourPackageName\]/g, THAT.props.packageName);
-      p.dirname = p.dirname.replace(/\[YourPackageName\]/g, THAT.props.packageName);
+      var basename = p.basename.replace(/\[YourPackageName\]/g, THAT.props.packageName);
+      basename = basename.replace(/\[ProjectName\]/g, THAT.props.projectName);
+      p.basename = basename;
+      var dirname = p.dirname.replace(/\[YourPackageName\]/g, THAT.props.packageName);
+      dirname = dirname.replace(/\[ProjectName\]/g, THAT.props.projectName);
+      p.dirname = dirname;
     }));
 
     var opts = {
@@ -89,7 +93,7 @@ module.exports = class extends Generator {
 
     this.fs.copyTpl(
       this.templatePath('Workspace/**'), 
-      path.join(this.destinationPath(), "Workspace~"),
+      path.join(this.destinationPath(), "Workspace"),
       opts
     );
   }
