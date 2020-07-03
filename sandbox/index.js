@@ -8,7 +8,7 @@ const mkdirp = require('mkdirp');
 const i18n = require("i18n");
 const user_local = require('get-user-locale');
 const rename = require("gulp-rename");
-const readJson = require('read-package-json')
+const loadJsonFile = require('load-json-file');
 
 
 const { __mf } = require('i18n');
@@ -20,17 +20,16 @@ module.exports = class extends Generator {
     this.props = {};
 
     var done = this.async();
-    readJson(this.destinationPath('package.json'), this.log, 
-    false, 
-    (er, data) => {
-        if (er) {
-            this.log(yosay("it`s not a unity-package project"));
-            process.exit(1);
-        }
 
-        this.props.packageName = data.name;
-        this.props.projectName = data.displayName;
-        done();
+    loadJsonFile(this.destinationPath('package.json'))
+    .then((data) => {
+      this.props.packageName = data.name;
+      this.props.projectName = data.displayName;
+      done();
+    })
+    .catch((er) => {
+      this.log(yosay("it`s not a unity-package project"));
+      process.exit(1);
     });
 
     i18n.configure({
