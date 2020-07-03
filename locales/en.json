@@ -1,0 +1,5 @@
+{
+	"hello": "hello world",
+	"welcome": "👏welcome to the %s generator!",
+	"nopath": "Your generator must be inside a folder named %s I'll automatically create this folder."
+}
