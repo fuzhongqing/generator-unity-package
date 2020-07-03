@@ -14,6 +14,12 @@ const { __mf } = require('i18n');
 module.exports = class extends Generator {
 
   initializing() {
+
+    if (this.config.get('info') == undefined) {
+        this.log(yosay("it's not a unity-packge project"));
+        process.exit(1);
+    }
+
     this.props = this.config.get('info');
 
     i18n.configure({
