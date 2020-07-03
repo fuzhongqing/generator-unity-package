@@ -101,6 +101,10 @@ module.exports = class extends Generator {
     this.config.save();
   }
 
+  install() {
+    this.npmInstall(['unity-package-cli']);
+  }
+
   end() {
     this.log(yosay("Finished! Goodbye~"));
   }
