@@ -7,6 +7,6 @@ public class EditorExample
 {
     static EditorExample()
     {
-        EditorApplication.update += () => { Debug.Log("Hello World Form Unity Package!"); };
+        EditorApplication.update += () => { Debug.Log("Hello World Form <%=projectName%>!"); };
     }
 }

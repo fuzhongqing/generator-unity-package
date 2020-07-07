@@ -1,4 +1,3 @@
-const dep = require('./dependency');
 
 module.exports = [
     {
@@ -27,13 +26,13 @@ module.exports = [
       choices: ['2017.1', '2018.4', '2019.1']
     },
     {
+      type: 'checkbox',
+      name: 'extensions',
+      choices: ['sandbox', 'android-plugin', 'iOS-plugin']
+    },
+    {
       type: 'input',
       name: 'author',
       default: 'anonymous'
-    },
-    {
-      type: 'checkbox',
-      name: 'dependencies',
-      choices: Object.keys(dep)
     }
   ]

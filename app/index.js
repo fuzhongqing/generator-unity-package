@@ -7,9 +7,8 @@ const extend = require('deep-extend');
 const mkdirp = require('mkdirp');
 const i18n = require("i18n");
 const user_local = require('get-user-locale');
-const yo = require('../package.json');
+const yoPackage = require('../package.json');
 const rename = require("gulp-rename");
-const dep = require('./dependency');
 
 
 const prompts = require('./prompts');
@@ -46,11 +45,13 @@ module.exports = class extends Generator {
       this.destinationRoot(path.join(this.destinationPath(), this.props.projectName));
     }
 
+    const repositoryPath = path.join(this.destinationRoot(), "Repository");
+
     this.registerTransformStream(rename(function(p) {
-      var basename = p.basename.replace(/\[YourPackageName\]/g, THAT.props.packageName);
+      var basename = p.basename.replace(/\[PackageName\]/g, THAT.props.packageName);
       basename = basename.replace(/\[ProjectName\]/g, THAT.props.projectName);
       p.basename = basename;
-      var dirname = p.dirname.replace(/\[YourPackageName\]/g, THAT.props.packageName);
+      var dirname = p.dirname.replace(/\[PackageName\]/g, THAT.props.packageName);
       dirname = dirname.replace(/\[ProjectName\]/g, THAT.props.projectName);
       p.dirname = dirname;
     }));
@@ -60,22 +61,36 @@ module.exports = class extends Generator {
       projectName: this.props.projectName,
       packageName: this.props.packageName,
       projectDescription: this.props.description,
-      yoHomePage: yo.homepage,
-      yoIssues: yo.bugs.url,
-      path: this.destinationPath()
+      yoHomePage: yoPackage.homepage,
+      yoIssues: yoPackage.bugs.url
     };
 
     this.fs.copyTpl(
       this.templatePath('**'), 
-      this.destinationPath(),
+      repositoryPath,
       opts
     );
 
-    this.config.set('info', opts);
+    this.config.set('install-info', opts);
 
     
     // process package.json
-    const pkg = this.fs.readJSON(this.templatePath('package.tmpl.json'), {});
+    const pkg = {
+      "name": "",
+      "version": "",
+      "displayName": "",
+      "description": "",
+      "unity": "",
+      "dependencies": {
+      },
+      "keywords": [
+      ],
+      "author": {
+        "name": "",
+        "email": "",
+        "url": ""
+      }
+    }
 
     pkg.name = this.props.packageName;
     pkg.version = this.props.version;
@@ -83,29 +98,24 @@ module.exports = class extends Generator {
     pkg.description = this.props.description;
     pkg.unity = this.props.unityVersion;
     pkg.author.name = this.props.author;
-    pkg.dependencies = pkg.dependencies || {};
 
-    this.props.dependencies.forEach(function(i) {
-      pkg.dependencies[dep[i].name] = dep[i].version;
-    });
 
-    this.fs.writeJSON(path.join(this.destinationPath(), 'package.json'), pkg);
-    /*
-    this.fs.copyTpl(
-      this.templatePath('Workspace/**'), 
-      path.join(this.destinationPath(), "Workspace"),
-      opts
-    );
-    */
-
+    this.fs.writeJSON(path.join(repositoryPath, 'package.json'), pkg);
     this.config.save();
   }
 
   install() {
-    this.npmInstall(['unity-package-cli']);
+    this.yarnInstall(['unity-package-cli', 'gitignore']);
   }
 
   end() {
+    this.spawnCommandSync('npx', ['gitignore', 'node']);
+    if (this.props.extensions.indexOf("sandbox") > -1) {
+      this.spawnCommandSync('yo', ['unity-package:sandbox']);
+    }
+    if (this.props.extensions.indexOf("android-plugin") > -1) {
+      this.spawnCommandSync('yo', ['unity-package:android']);
+    }
     this.log(yosay("Finished! Goodbye~"));
   }
 };

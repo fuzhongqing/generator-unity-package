@@ -35,7 +35,7 @@ module.exports = class extends Generator {
   }
 
   prompting() {
-    this.log(yosay(__mf('welcome', chalk.red('unity-package:sandbox'))));
+    this.log(yosay(__mf('welcome', chalk.red('unity-package:android'))));
   }
 
   writing() {
@@ -65,7 +65,8 @@ module.exports = class extends Generator {
   }
 
   end() {
-    this.destinationRoot(`${this.config.get('install-info').projectName}_Sandbox`);
-    this.spawnCommandSync('npx', ['gitignore', 'Unity']);
+    
+    this.log(this.destinationRoot(`${this.config.get('install-info').projectName}_Android`));
+    this.spawnCommandSync('npx', ['gitignore', 'android']);
   }
 };
