@@ -64,9 +64,7 @@ module.exports = class extends Generator {
     );
   }
 
-  end() {
-    
-    this.log(this.destinationRoot(`${this.config.get('install-info').projectName}_Android`));
+  end() {    
     this.spawnCommandSync('npx', ['gitignore', 'android']);
   }
 };
