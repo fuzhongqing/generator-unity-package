@@ -1,4 +1,5 @@
 'use strict';
+
 const Generator = require('yeoman-generator');
 const chalk = require('chalk');
 const yosay = require('yosay');
@@ -41,6 +42,10 @@ module.exports = class extends Generator {
   writing() {
 
     var THAT = this.config.get('install-info');
+
+    THAT.packageName = THAT.packageName.toLowerCase();
+    THAT.projectName = THAT.projectName.toLowerCase();
+
     var repositoryPath = path.join(this.destinationRoot(), "Repository");
 
     this.registerTransformStream(rename(function(p) {
@@ -65,8 +70,8 @@ module.exports = class extends Generator {
   }
 
   end() {
-    
     this.log(this.destinationRoot(`${this.config.get('install-info').projectName}_Android`));
+
     this.spawnCommandSync('npx', ['gitignore', 'android']);
   }
 };
