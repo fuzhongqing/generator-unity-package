@@ -21,6 +21,7 @@
   "homepage": "https://github.com/fuzhongqing/generator-unity-package#readme",
   "dependencies": {
     "chalk": "^4.1.0",
+    "cli-spinner": "^0.2.10",
     "deep-extend": "^0.6.0",
     "get-user-locale": "^1.4.0",
     "gulp-rename": "1.2.2",

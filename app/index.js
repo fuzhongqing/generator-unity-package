@@ -9,6 +9,8 @@ const i18n = require("i18n");
 const user_local = require('get-user-locale');
 const yoPackage = require('../package.json');
 const rename = require("gulp-rename");
+const spinner = require('cli-spinner');
+
 
 
 const prompts = require('./prompts');
@@ -109,7 +111,17 @@ module.exports = class extends Generator {
   }
 
   end() {
+
+    var obj = new spinner.Spinner({
+    text: 'add gitignore..... %s',
+    stream: process.stderr,
+    onTick: function(msg){
+        this.clearLine(this.stream);
+        this.stream.write(msg);
+    }
+    });
     this.spawnCommandSync('npx', ['gitignore', 'node']);
+    obj.stop(true);
     if (this.props.extensions.indexOf("sandbox") > -1) {
       this.spawnCommandSync('yo', ['unity-package:sandbox']);
     }
