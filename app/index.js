@@ -68,7 +68,7 @@ module.exports = class extends Generator {
     };
 
     this.fs.copyTpl(
-      this.templatePath('**'), 
+      [this.templatePath('**'), this.templatePath('.npmignore')], 
       repositoryPath,
       opts
     );
