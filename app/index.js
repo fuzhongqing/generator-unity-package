@@ -107,21 +107,10 @@ module.exports = class extends Generator {
   }
 
   install() {
-    this.yarnInstall(['unity-package-cli', 'gitignore']);
+    this.yarnInstall(['unity-package-cli']);
   }
 
   end() {
-
-    var obj = new spinner.Spinner({
-    text: 'add gitignore..... %s',
-    stream: process.stderr,
-    onTick: function(msg){
-        this.clearLine(this.stream);
-        this.stream.write(msg);
-    }
-    });
-    this.spawnCommandSync('npx', ['gitignore', 'node']);
-    obj.stop(true);
     if (this.props.extensions.indexOf("sandbox") > -1) {
       this.spawnCommandSync('yo', ['unity-package:sandbox']);
     }

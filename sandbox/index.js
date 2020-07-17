@@ -46,6 +46,7 @@ module.exports = class extends Generator {
     this.registerTransformStream(rename(function(p) {
         var basename = p.basename.replace(/\[PackageName\]/g, THAT.packageName);
         basename = basename.replace(/\[ProjectName\]/g, THAT.projectName);
+        basename = basename.replace(/\_/g, '\.');
         p.basename = basename;
         var dirname = p.dirname.replace(/\[PackageName\]/g, THAT.packageName);
         dirname = dirname.replace(/\[ProjectName\]/g, THAT.projectName);
@@ -66,6 +67,5 @@ module.exports = class extends Generator {
 
   end() {
     this.destinationRoot(`${this.config.get('install-info').projectName}_Sandbox`);
-    this.spawnCommandSync('npx', ['gitignore', 'Unity']);
   }
 };

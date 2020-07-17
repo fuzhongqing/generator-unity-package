@@ -43,17 +43,22 @@ module.exports = class extends Generator {
 
     var THAT = this.config.get('install-info');
 
-    THAT.packageName = THAT.packageName.toLowerCase();
-    THAT.projectName = THAT.projectName.toLowerCase();
+    THAT.packagename = THAT.packageName.toLowerCase();
+    THAT.projectname = THAT.projectName.toLowerCase();
 
     var repositoryPath = path.join(this.destinationRoot(), "Repository");
 
     this.registerTransformStream(rename(function(p) {
         var basename = p.basename.replace(/\[PackageName\]/g, THAT.packageName);
         basename = basename.replace(/\[ProjectName\]/g, THAT.projectName);
+        basename = basename.replace(/\[projectname\]/g, THAT.projectname);
+        basename = basename.replace(/\[packagename\]/g, THAT.projectname);
+        basename = basename.replace(/\_/g, '\.');
         p.basename = basename;
         var dirname = p.dirname.replace(/\[PackageName\]/g, THAT.packageName);
         dirname = dirname.replace(/\[ProjectName\]/g, THAT.projectName);
+        dirname = dirname.replace(/\[packagename\]/g, THAT.packagename);
+        dirname = dirname.replace(/\[projectname\]/g, THAT.projectname);
         p.dirname = dirname;
       }));
 
@@ -70,7 +75,5 @@ module.exports = class extends Generator {
   }
 
   end() {
-
-    this.spawnCommandSync('npx', ['gitignore', 'android']);
   }
 };

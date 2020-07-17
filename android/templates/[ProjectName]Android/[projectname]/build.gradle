@@ -44,7 +44,7 @@ uploadArchives {
             }
             pom.version = version
             pom.artifactId = 'android'
-            pom.groupId = '<%=packageName%>'
+            pom.groupId = '<%=packagename%>'
         }
     }
 }
