@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'maven'
 
 android {
     compileSdkVersion 28
@@ -24,10 +25,27 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'androidx.appcompat:appcompat:1.1.0'
+    compileOnly files('libs/unity-classes.jar')
+
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: repoUrl) {
+                authentication(userName: user, password: password)
+            }
+            snapshotRepository(url: snapshotRepoUrl) {
+                authentication(userName: user, password: password)
+            }
+            pom.version = version
+            pom.artifactId = 'android'
+            pom.groupId = '<%=packageName%>'
+        }
+    }
 }
